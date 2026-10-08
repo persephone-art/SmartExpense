@@ -1,0 +1,365 @@
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tax Comparison | SmartExpense</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            color: #2d3748;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 35px 20px 10px;
+        }
+
+        .brand {
+            color: #667eea;
+            font-size: 17px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 18px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            color: #303b65;
+            margin-bottom: 12px;
+        }
+
+        .page-header p {
+            color: #667085;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 28px auto;
+            padding: 0 22px 35px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 23px;
+            box-shadow: 0 5px 18px rgba(50, 60, 110, 0.07);
+            border: 1px solid #edf0fa;
+        }
+
+        .card h3 {
+            font-size: 15px;
+            color: #667085;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .amount {
+            color: #5b5bd6;
+            font-size: 23px;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .card-note {
+            color: #7b8498;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-top: 12px;
+        }
+
+        .section-title {
+            color: #303b65;
+            font-size: 24px;
+            margin-bottom: 18px;
+        }
+
+        .tax-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .tax-card {
+            background: #ffffff;
+            border: 1px solid #e5e9f7;
+            border-top: 5px solid #667eea;
+            border-radius: 15px;
+            padding: 28px;
+            box-shadow: 0 5px 18px rgba(50, 60, 110, 0.07);
+        }
+
+        .tax-card h2 {
+            color: #303b65;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .tax-label {
+            color: #667085;
+            margin-bottom: 12px;
+        }
+
+        .tax-value {
+            color: #5b5bd6;
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            overflow-wrap: anywhere;
+        }
+
+        .monthly-tax {
+            color: #667085;
+            line-height: 1.7;
+        }
+
+        .monthly-tax strong {
+            color: #303b65;
+        }
+
+        .recommendation {
+            background: #eef0ff;
+            border: 1px solid #d8dcff;
+            border-radius: 15px;
+            padding: 27px;
+            margin-top: 25px;
+            line-height: 1.8;
+        }
+
+        .recommendation h2 {
+            color: #4f46a5;
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .recommended-regime {
+            color: #5145b5;
+            font-size: 20px;
+            margin: 10px 0;
+            overflow-wrap: anywhere;
+        }
+
+        .recommendation p {
+            color: #555f7a;
+        }
+
+        .disclaimer {
+            background: #fff9ed;
+            border-left: 4px solid #e8b65c;
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 22px;
+            color: #775d2d;
+            line-height: 1.8;
+            font-size: 13px;
+        }
+
+        .button-area {
+            display: flex;
+            justify-content: center;
+            margin: 35px 0 10px;
+        }
+
+        .home-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 30px;
+            border-radius: 9px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 5px 14px rgba(102, 126, 234, 0.25);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(102, 126, 234, 0.35);
+        }
+
+        footer {
+            text-align: center;
+            color: #8a91a5;
+            font-size: 13px;
+            padding: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .summary-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .page-header h1 {
+                font-size: 26px;
+            }
+
+            .summary-grid,
+            .tax-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 15px 25px;
+            }
+
+            .tax-card {
+                padding: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="page-header">
+    <div class="brand">SmartExpense</div>
+    <h1>Tax Regime Comparison</h1>
+    <p>
+        Compare your estimated tax using income records saved in SmartExpense.
+    </p>
+</header>
+
+<main class="container">
+
+    <section class="summary-grid">
+
+        <div class="card">
+            <h3>Income This Month</h3>
+            <div class="amount">
+                ₹<span th:text="${#numbers.formatDecimal(monthlyIncome, 1, 2)}">0.00</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Income Year to Date</h3>
+            <div class="amount">
+                ₹<span th:text="${#numbers.formatDecimal(yearToDateIncome, 1, 2)}">0.00</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Expenses This Month</h3>
+            <div class="amount">
+                ₹<span th:text="${#numbers.formatDecimal(monthlyExpenses, 1, 2)}">0.00</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Projected Annual Income</h3>
+            <div class="amount">
+                ₹<span th:text="${#numbers.formatDecimal(projectedAnnualIncome, 1, 2)}">0.00</span>
+            </div>
+            <p class="card-note">
+                Current month's recorded income multiplied by 12.
+            </p>
+        </div>
+
+    </section>
+
+    <h2 class="section-title">Estimated Tax for Both Regimes</h2>
+
+    <section class="tax-grid">
+
+        <div class="tax-card">
+            <h2>Old Tax Regime</h2>
+
+            <p class="tax-label">Estimated annual tax</p>
+
+            <div class="tax-value">
+                ₹<span th:text="${#numbers.formatDecimal(oldTax, 1, 2)}">0.00</span>
+            </div>
+
+            <p class="monthly-tax">
+                Monthly equivalent:
+                <strong>
+                    ₹<span th:text="${#numbers.formatDecimal(monthlyOldTax, 1, 2)}">0.00</span>
+                </strong>
+            </p>
+        </div>
+
+        <div class="tax-card">
+            <h2>New Tax Regime</h2>
+
+            <p class="tax-label">Estimated annual tax</p>
+
+            <div class="tax-value">
+                ₹<span th:text="${#numbers.formatDecimal(newTax, 1, 2)}">0.00</span>
+            </div>
+
+            <p class="monthly-tax">
+                Monthly equivalent:
+                <strong>
+                    ₹<span th:text="${#numbers.formatDecimal(monthlyNewTax, 1, 2)}">0.00</span>
+                </strong>
+            </p>
+        </div>
+
+    </section>
+
+    <section class="recommendation">
+        <h2>SmartExpense Recommendation</h2>
+
+        <p>
+            Based on the current simplified estimate, the lower-tax option is:
+        </p>
+
+        <h3 class="recommended-regime" th:text="${recommended}">
+            Tax recommendation
+        </h3>
+
+        <p>
+            Difference between the two estimates:
+            <strong>
+                ₹<span th:text="${#numbers.formatDecimal(annualSavings, 1, 2)}">0.00</span>
+            </strong>
+            per year.
+        </p>
+    </section>
+
+    <section class="disclaimer">
+        <strong>Important:</strong>
+        <span th:text="${taxDisclaimer}">
+            Illustrative estimate only. Not a final tax calculation.
+        </span>
+        The calculation uses simplified tax slabs and does not fully account
+        for all deductions, rebates, cess, or applicable tax rules. The result
+        should not be treated as professional tax advice.
+    </section>
+
+    <div class="button-area">
+        <a th:href="@{/dashboard}" class="home-button">
+            ← Back to Homepage
+        </a>
+    </div>
+
+</main>
+
+<footer>
+    SmartExpense · Manage your money smarter
+</footer>
+
+</body>
+</html>
+```

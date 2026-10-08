@@ -1,0 +1,43 @@
+```gitignore
+# Maven build output
+target/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# Eclipse files
+.classpath
+.project
+.settings/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs and temporary files
+*.log
+logs/
+*.tmp
+*.temp
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Local configuration files
+application-local.properties
+application-secrets.properties
+
+# Java crash dumps
+hs_err_pid*
+replay_pid*
+
+# Compressed database backups
+*.sql.gz
+*.dump
+```
+/src/main/resources/application.properties

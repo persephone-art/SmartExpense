@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - SmartExpense</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .register-card {
+            background: white;
+            width: 100%;
+            max-width: 430px;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(40, 50, 100, 0.12);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #667085;
+            text-align: center;
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #344054;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: 2px solid #c7d2fe;
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.92;
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
+        .error {
+            background: #fff0f0;
+            color: #b42318;
+        }
+
+        .bottom-text {
+            margin-top: 22px;
+            text-align: center;
+            color: #667085;
+        }
+
+        a {
+            color: #5b5bd6;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="register-card">
+
+    <h1>SmartExpense</h1>
+
+    <p class="subtitle">Create your account and manage your finances.</p>
+
+    <div class="message error"
+         th:if="${error}"
+         th:text="${error}">
+    </div>
+
+    <form th:action="@{/register}" method="post">
+
+        <label for="name">Your Name</label>
+        <input type="text"
+               id="name"
+               name="name"
+               maxlength="100"
+               autocomplete="name"
+               required>
+
+        <label for="email">Email Address</label>
+        <input type="email"
+               id="email"
+               name="email"
+               maxlength="100"
+               autocomplete="email"
+               required>
+
+        <label for="password">Choose Password</label>
+        <input type="password"
+               id="password"
+               name="password"
+               minlength="8"
+               autocomplete="new-password"
+               required>
+
+        <button type="submit">Create Account</button>
+
+    </form>
+
+    <p class="bottom-text">
+        Already have an account?
+        <a th:href="@{/}">Login here</a>
+    </p>
+
+</div>
+
+</body>
+</html>
